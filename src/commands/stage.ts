@@ -32,6 +32,17 @@ class StateManager{
 		return hashSum.digest("hex");
 	}
 
+	/**
+	 * Save fileblob in objects directory
+	 * @param filePath Path to the file to save
+	 * @param hash Computed hash of the file
+	 */
+
+	private saveFileBlob(filePath : string, hash : string): void{
+		const blobPath = path.join(this.objectsPath, hash);
+		fs.copyFileSync(filePath, blobPath)
+	}
+
 
 	/**
 	 * Stage a single or multiple files
