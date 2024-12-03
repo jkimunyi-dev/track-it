@@ -29,3 +29,20 @@ class CommitManager{
 		this.headPath = path.join(this.trackItPath, "HEAD");
 	}
 }
+
+/**
+ * CLI Command for creating a commit
+ * @param message Commit message
+ */
+
+export function commitCommand(message: string): void{
+	try {
+		if(!message){
+			throw new Error("Commit message is required");
+			
+		}
+	} catch (error) {
+		console.error("Commit Failed : ", error);
+		process.exit(1);
+	}
+}
