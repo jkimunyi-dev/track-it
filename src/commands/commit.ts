@@ -103,7 +103,20 @@ class CommitManager{
 		// Generate commit hash
 		const commitHash = this.hashCommitObject(commitObject);
 
-		return ""
+		// Save commit object
+		const commitPath = path.join(this.objectsPath, commitHash);
+		fs.writeFileSync(commitPath, JSON.stringify(commitObject, null, 2));
+
+		// Update branch reference
+		const currentBranch = this.getCurrentBranch();
+		const branchRefPath = path.join(this.refsPath, "heads", currentBranch);
+		fs.writeFileSync(branchRefPath, commitHash);
+
+		// Clear the index
+		fs.writeFileSync(this.indexPath, "[]");
+		
+		console.log(`Committed changes: ${commitHash}`);
+    	return commitHash;
 	}
 }
 
