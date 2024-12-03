@@ -67,5 +67,38 @@ class StateManager{
 		if(fs.existsSync(this.indexPath)){
 			stagedFiles = JSON.parse(fs.readFileSync(this.indexPath, "utf-8"));
 		}
+
+		// Process all staged files
+		filePaths.forEach(filePath=>{
+			// Validate file exists
+			if(!fs.existsSync(filePath)){
+				console.error(`File not found: ${filePath}`);
+				return;
+			}
+			
+			// Compute file hash 
+			const fileHash = this.computeHashFile(filePath);
+
+			// Save file blob
+
+			this.saveFileBlob(filePath, fileHash)
+
+			// Update / add to staged files
+
+			const existingFileIndex = stagedFiles.findIndex(f => f.path === filePath);
+			const stagedFile: StagedFile = {path : filePath, hash: fileHash};
+
+			if(existingFileIndex !== -1){
+				stagedFiles[existingFileIndex] = stagedFile;
+			}else{
+				stagedFiles.push(stagedFile)
+			}
+
+			console.log(`Staged: ${filePath} (${fileHash})`);
+		});
+
+		// Update index
+
+		this.updateIndex(stagedFiles);
 	}
 }
