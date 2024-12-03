@@ -101,4 +101,20 @@ class StateManager{
 
 		this.updateIndex(stagedFiles);
 	}
+
+}
+/**
+ * CLI Command for staging files
+ * @param filePaths Files to stage
+ */
+
+export function stageCommand(filePaths: string[]):void{
+	try{
+		const stateManager = new StateManager();
+		stateManager.stage(filePaths);
+
+	}catch(error){
+		console.log("Staging failed: ", error);
+		process.exit(1);
+	}
 }
