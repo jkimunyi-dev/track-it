@@ -19,6 +19,19 @@ class StateManager{
 		this.objectsPath = path.join(this.trackItPath, "objects");
 	}
 
+	/**
+	 * Compute SHA-245 hash of file content
+	 * @param filePath Path to the file to hash
+	 * @returns Computed hash string
+	 */
+
+	private computeHashFile(filePath : string): string {
+		const fileBuffer = fs.readFileSync(filePath);
+		const hashSum = crypto.createHash("sha-256");
+		hashSum.update(fileBuffer);
+		return hashSum.digest("hex");
+	}
+
 
 	/**
 	 * Stage a single or multiple files
