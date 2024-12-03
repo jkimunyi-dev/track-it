@@ -43,6 +43,16 @@ class StateManager{
 		fs.copyFileSync(filePath, blobPath)
 	}
 
+	/**
+	 * Update the index file with staged files
+	 * @param stagedFiles List of staged files
+	 */
+
+	private updateIndex(stagedFiles : StagedFile[]): void{
+		const indexContent = JSON.stringify(stagedFiles, null, 2)
+		fs.writeFileSync(this.indexPath, indexContent)
+	}
+
 
 	/**
 	 * Stage a single or multiple files
