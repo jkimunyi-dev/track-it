@@ -41,6 +41,11 @@ class CommitManager{
 		return JSON.parse(fs.readFileSync(this.indexPath, "utf-8"))
 	}
 
+	/**
+	 * Get the current branch name of the HEAD
+	 * @returns Current branch name
+	 */
+
 	private getCurrentBranch(): string {
 		const headContent = fs.readFileSync(this.headPath, "utf-8").trim();
 		
@@ -52,8 +57,12 @@ class CommitManager{
 	 * @returns Commit hash or undefined if there are no previous commits
 	 */
 
-	private getLatestCommitHash(): string {
-		return ""
+	private getLatestCommitHash(): string | undefined{
+		const branchRefPath = path.join(this.refsPath, "heads", this.getCurrentBranch());
+
+		return fs.existsSync(branchRefPath) 
+		? fs.readFileSync(branchRefPath, "utf-8").trim() 
+		: undefined
 	}
 
 	/**
