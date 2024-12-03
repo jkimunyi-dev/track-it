@@ -18,4 +18,20 @@ class StateManager{
 		this.indexPath = path.join(this.trackItPath, "index");
 		this.objectsPath = path.join(this.trackItPath, "objects");
 	}
+
+
+	/**
+	 * Stage a single or multiple files
+	 * @param filePaths File paths to stage
+	 */
+	public stage(filePaths: string[]): void{
+		// Ensure .track-it/objects exists
+		fs.ensureDirSync(this.objectsPath);
+
+		// Read existing index or initialize
+		let stagedFiles: StagedFile[] = [];
+		if(fs.existsSync(this.indexPath)){
+			stagedFiles = JSON.parse(fs.readFileSync(this.indexPath, "utf-8"));
+		}
+	}
 }
