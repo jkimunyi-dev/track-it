@@ -66,6 +66,19 @@ class CommitManager{
 	}
 
 	/**
+	 * Hash a commit object to generate a uniques identifier
+	 * @param commitObject Commit object to hash
+	 * @returns Commit hash
+	 */
+
+	private hashCommitObject(commitObject : CommitObject): string{
+		const hashSum = crypto.createHash("sha-256");
+		hashSum.update(JSON.stringify(commitObject));
+		
+		return hashSum.digest("hex");
+	}
+
+	/**
 	 * Create a commit object and save it
 	 * @param message Commit message
 	 * @returns Commit hash
@@ -86,6 +99,9 @@ class CommitManager{
 			files : stagedFiles,
 			parent : this.getLatestCommitHash()
 		}
+
+		// Generate commit hash
+		const commitHash = this.hashCommitObject(commitObject);
 
 		return ""
 	}
