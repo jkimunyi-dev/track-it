@@ -9,7 +9,7 @@ interface StagedFile {
 
 interface CommitObject{
 	timestamp: number;
-	mesasge: string;
+	message: string;
 	files : StagedFile[];
 	parent?: string; // Optional reference to previous commit
 }
@@ -41,6 +41,21 @@ class CommitManager{
 		return JSON.parse(fs.readFileSync(this.indexPath, "utf-8"))
 	}
 
+	private getCurrentBranch(): string {
+		const headContent = fs.readFileSync(this.headPath, "utf-8").trim();
+		
+		return headContent.split("refs/heads/")[1] || " main";
+	}
+
+	/**
+	 * Get latest commit hash for the current branch
+	 * @returns Commit hash or undefined if there are no previous commits
+	 */
+
+	private getLatestCommitHash(): string {
+		return ""
+	}
+
 	/**
 	 * Create a commit object and save it
 	 * @param message Commit message
@@ -50,6 +65,19 @@ class CommitManager{
 	public commit(message: string): string{
 		// Ensure there are staged files
 		const stagedFiles = this.readStagedFiles();
+		if(stagedFiles.length ===0){
+			throw new Error("No changes staged for commit");
+			
+		}
+
+		// Create a commit object
+		const commitObject: CommitObject = {
+			timestamp : Date.now(),
+			message,
+			files : stagedFiles,
+			parent : this.getLatestCommitHash()
+		}
+
 		return ""
 	}
 }
