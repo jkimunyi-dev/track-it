@@ -13,6 +13,16 @@ class BranchManager{
 	}
 
 	/**
+    * Get the current branch name
+    * @returns Current branch name
+    */
+	public getCurrentBranch(): string {
+		const headContent = fs.readFileSync(this.headPath, "utf-8").trim();
+		return headContent.split("refs/heads/")[1] || "main";
+	}
+	
+
+	/**
 	 * Get the latest commit hash for a given branch
 	 * @param branchName Branch name
 	 * @returns Commit hash or undefined if no commits exist
