@@ -100,6 +100,24 @@ class LogManager{
 	  
 		}
 
+		if (maxCommits && currentCommitHash) {
+			console.log(`... and more commits (showing ${maxCommits} most recent)`);
+		  }
 	  
 	}
 }
+
+/**
+ * CLI Command for displaying commit log
+ * @param maxCommits Optional maximum number of commits to display
+ */
+export function logCommand(maxCommits?: number): void {
+	try {
+	  const logManager = new LogManager();
+	  logManager.log(maxCommits);
+	} catch (error) {
+	  console.error("Failed to display log:", error);
+	  process.exit(1);
+	}
+  }
+  
