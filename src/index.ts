@@ -7,6 +7,8 @@ import { branchCommand, checkoutCommand, branchListCommand } from "./commands/br
 import { mergeCommand } from "./commands/merge";
 import { diffCommand } from "./commands/diff";
 import { cloneCommand } from "./commands/clone";
+import IgnoreManager from "./commands/ignore";
+import { ignoreCommand } from "./commands/ignoreFn";
 
 program.version("0.1.0").description("TrackIt - A Minimal git implementation in typescript")
 
@@ -58,6 +60,11 @@ program
 	.command("clone <destination>")
 	.description("Clone repository to a new location")
 	.action(cloneCommand)
+program
+	.command("ignore [patterns...]")
+	.description("Manage .track-itignore file. Without arguments, list current ignore patterns. With arguments, add new ignore patterns.")
+	.action(ignoreCommand)
+  
   
 
 program.parse(process.argv);
