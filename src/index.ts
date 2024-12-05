@@ -3,6 +3,7 @@ import { initRepository } from './commands/init';
 import { stageCommand } from "./commands/stage";
 import { commitCommand } from "./commands/commit";
 import { logCommand } from "./commands/log";
+import { branchCommand, checkoutCommand, branchListCommand } from "./commands/branch";
 
 program.version("0.1.0").description("TrackIt - A Minimal git implementation in typescript")
 
@@ -26,5 +27,9 @@ program
 	.description("View commit history")
 	.action(logCommand)
 
+program
+	.command("branch <name>")
+	.description("Create a new branch")
+	.action(branchCommand)
 
 program.parse(process.argv);
