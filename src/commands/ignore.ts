@@ -8,24 +8,29 @@ class IgnoreManager {
   private ignorePatterns: string[];
 
   constructor(rootDir: string = process.cwd()) {
-    this.ignorePath = path.join(rootDir, '.ignore');
+    this.ignorePath = path.join(rootDir, '.track-itignore');
     this.ignorePatterns = this.loadIgnorePatterns();
   }
 
   /**
-   * Load ignore patterns from .ignore file
+   * Load ignore patterns from .track-itignore file
    * @returns Array of ignore patterns
    */
   private loadIgnorePatterns(): string[] {
-    if (!fs.existsSync(this.ignorePath)) {
+    try {
+      if (!fs.existsSync(this.ignorePath)) {
+        return [];
+      }
+
+      const content = fs.readFileSync(this.ignorePath, 'utf-8');
+      return content
+        .split('\n')
+        .map(line => line.trim())
+        .filter(line => line && !line.startsWith('#'));
+    } catch (error) {
+      console.error('Error reading ignore file:', error);
       return [];
     }
-
-    const content = fs.readFileSync(this.ignorePath, 'utf-8');
-    return content
-      .split('\n')
-      .map(line => line.trim())
-      .filter(line => line && !line.startsWith('#'));
   }
 
   /**
@@ -36,7 +41,7 @@ class IgnoreManager {
   public isFileIgnored(filePath: string): boolean {
     const relativePath = path.relative(process.cwd(), filePath);
     return this.ignorePatterns.some(pattern => 
-      minimatch(relativePath, pattern, { dot: true })
+      minimatch(relativePath, pattern, { dot: true, matchBase: true })
     );
   }
 
@@ -47,6 +52,52 @@ class IgnoreManager {
    */
   public filterIgnoredFiles(files: string[]): string[] {
     return files.filter(file => !this.isFileIgnored(file));
+  }
+
+  /**
+   * Add new ignore patterns to the .track-itignore file
+   * @param patterns Patterns to ignore
+   */
+  public addIgnorePatterns(patterns: string[]): void {
+    try {
+      // Read existing patterns
+      const existingPatterns = this.loadIgnorePatterns();
+
+      // Filter out duplicate patterns
+      const newPatterns = patterns.filter(pattern => 
+        !existingPatterns.includes(pattern)
+      );
+
+      if (newPatterns.length === 0) {
+        console.log('All specified patterns are already ignored');
+        return;
+      }
+
+      // Combine existing and new patterns
+      const updatedPatterns = [
+        ...existingPatterns,
+        ...newPatterns
+      ];
+
+      // Write back to file
+      fs.writeFileSync(
+        this.ignorePath, 
+        updatedPatterns.join('\n') + '\n'
+      );
+
+      console.log('Updated ignore patterns:');
+      newPatterns.forEach(pattern => console.log(`+ ${pattern}`));
+    } catch (error) {
+      console.error('Failed to update ignore patterns:', error);
+    }
+  }
+
+  /**
+   * Get current ignore patterns
+   * @returns Array of current ignore patterns
+   */
+  public getIgnorePatterns(): string[] {
+    return this.ignorePatterns;
   }
 }
 
