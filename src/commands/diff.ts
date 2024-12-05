@@ -1,6 +1,12 @@
 import * as fs from 'fs-extra';
 import * as path from 'path';
 import { diff_match_patch } from 'diff-match-patch';
+import CommitManager from './commit';
+
+interface FileInfo {
+  path: string;
+  hash: string;
+}
 
 interface DiffResult {
   filePath: string;
@@ -10,10 +16,12 @@ interface DiffResult {
 class DiffManager {
   private trackItPath: string;
   private objectsPath: string;
+  private commitManager: CommitManager;
 
   constructor() {
     this.trackItPath = path.resolve(process.cwd(), ".track-it");
     this.objectsPath = path.join(this.trackItPath, "objects");
+    this.commitManager = new CommitManager();
   }
 
   /**
@@ -68,9 +76,9 @@ class DiffManager {
    * @returns Detailed diff results
    */
   public diffCommits(commit1Hash: string, commit2Hash: string): DiffResult[] {
-    const commitManager = new CommitManager(); // Assuming CommitManager is imported
-    const commit1 = commitManager.readCommitObject(commit1Hash);
-    const commit2 = commitManager.readCommitObject(commit2Hash);
+    // Use the method from the imported CommitManager
+    const commit1 = this.commitManager.readCommitObject(commit1Hash);
+    const commit2 = this.commitManager.readCommitObject(commit2Hash);
 
     const diffResults: DiffResult[] = [];
 
@@ -79,7 +87,7 @@ class DiffManager {
     const commit2FileMap = new Map(commit2.files.map(f => [f.path, f.hash]));
 
     // Check files in first commit
-    commit1.files.forEach(file => {
+    commit1.files.forEach((file: FileInfo) => {
       const file2Hash = commit2FileMap.get(file.path);
       if (file2Hash && file2Hash !== file.hash) {
         // Files exist in both commits and have different hashes
@@ -92,7 +100,7 @@ class DiffManager {
     });
 
     // Check for new files in second commit
-    commit2.files.forEach(file => {
+    commit2.files.forEach((file: FileInfo) => {
       if (!commit1FileMap.has(file.path)) {
         diffResults.push({
           filePath: file.path,
