@@ -4,6 +4,7 @@ import { stageCommand } from "./commands/stage";
 import { commitCommand } from "./commands/commit";
 import { logCommand } from "./commands/log";
 import { branchCommand, checkoutCommand, branchListCommand } from "./commands/branch";
+import { mergeCommand } from "./commands/merge";
 
 program.version("0.1.0").description("TrackIt - A Minimal git implementation in typescript")
 
@@ -41,5 +42,9 @@ program
 	.command("branch-list")
 	.description("List all branches")
 	.action(branchListCommand)
+program
+	.command("merge <branch>")
+	.description("Merge a branch into the current branch")
+	.action(mergeCommand)
 
 program.parse(process.argv);
