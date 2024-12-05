@@ -54,6 +54,24 @@ class BranchManager{
 	
 		console.log(`Switched to branch: ${branchName}`);
 	}
+
+	/**
+    * List all branches
+    * @returns Array of branch names
+    */
+	public listBranches(): string[] {
+		// Ensure refs/heads directory exists
+		fs.ensureDirSync(this.refsPath);
+	
+		// Read all branch files
+		const branches = fs.readdirSync(this.refsPath);
+		
+		return branches.map(branch => {
+		  const isCurrentBranch = branch === this.getCurrentBranch();
+		  return isCurrentBranch ? `* ${branch}` : branch;
+		});
+	}
+	
 	
 	
 
