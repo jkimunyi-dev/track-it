@@ -17,13 +17,13 @@ interface CommitObject{
 class LogManager{
 	private trackItPath: string
 	private refsPath :string;
-	private objectPath: string;
+	private objectsPath: string;
 	private headPath: string;
 
 	constructor(){
 		this.trackItPath = path.resolve(process.cwd(), ".track-it");
 		this.refsPath = path.join(this.trackItPath, "refs")
-		this.objectPath = path.join(this.trackItPath, "objects");
+		this.objectsPath = path.join(this.trackItPath, "objects");
 		this.headPath = path.join(this.trackItPath, "HEAD");
 	}
 
@@ -46,7 +46,21 @@ class LogManager{
 		return fs.existsSync(branchRefPath) 
 		  ? fs.readFileSync(branchRefPath, "utf-8").trim() 
 		  : undefined;
+	}
+
+	/**
+   * Read a commit object from the objects directory
+   * @param commitHash Hash of the commit to read
+   * @returns Parsed CommitObject
+   */
+	private readCommitObject(commitHash: string): CommitObject {
+		const commitPath = path.join(this.objectsPath, commitHash);
+		if (!fs.existsSync(commitPath)) {
+		  throw new Error(`Commit ${commitHash} not found`);
+		}
+		return JSON.parse(fs.readFileSync(commitPath, "utf-8"));
 	  }
+	
 	
 
 	/**
@@ -55,6 +69,20 @@ class LogManager{
 	 */
 
 	public log(maxCommits? :number): void{
-		let currentCommit = this.getLatestCommitHash()
+		let currentCommitHash = this.getLatestCommitHash()
+
+		if (!currentCommitHash) {
+			console.log("No commits found in the current repository.");
+			return;
+		}
+
+		let commitCount = 0;
+		while (currentCommitHash && (maxCommits === undefined || commitCount < maxCommits)) {
+		const commitObject = this.readCommitObject(currentCommitHash);
+		
+		
+		}
+
+	  
 	}
 }
