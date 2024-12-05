@@ -118,3 +118,5 @@ export function stageCommand(filePaths: string[]):void{
 		process.exit(1);
 	}
 }
+
+export default StateManager;
