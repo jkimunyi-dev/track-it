@@ -37,4 +37,9 @@ program
 	.description("Swithch to a branch")
 	.action(checkoutCommand)
 
+program
+	.command("branch-list")
+	.description("List all branches")
+	.action(branchListCommand)
+
 program.parse(process.argv);
