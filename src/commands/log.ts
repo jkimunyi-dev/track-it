@@ -78,9 +78,26 @@ class LogManager{
 
 		let commitCount = 0;
 		while (currentCommitHash && (maxCommits === undefined || commitCount < maxCommits)) {
-		const commitObject = this.readCommitObject(currentCommitHash);
-		
-		
+			const commitObject = this.readCommitObject(currentCommitHash);
+
+			// Format date
+			const date = new Date(commitObject.timestamp);
+      
+			// Display commit information
+			console.log(`commit ${currentCommitHash}`);
+			console.log(`Date: ${date.toLocaleString()}`);
+			console.log(`Message: ${commitObject.message}`);
+			console.log(`Files changed: ${commitObject.files.length}`);
+			console.log('Changed files:');
+			commitObject.files.forEach(file => {
+			  console.log(`  - ${file.path} (${file.hash})`);
+			});
+			console.log('\n');
+	  
+			// Move to parent commit
+			currentCommitHash = commitObject.parent;
+			commitCount++;
+	  
 		}
 
 	  
