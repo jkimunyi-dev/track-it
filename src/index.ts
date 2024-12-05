@@ -18,7 +18,7 @@ program
 	.action(stageCommand)
 
 program
-	.command("commit")
+	.command("commit <message>")
 	.description("Commit files")
 	.action(commitCommand)
 
@@ -31,5 +31,10 @@ program
 	.command("branch <name>")
 	.description("Create a new branch")
 	.action(branchCommand)
+
+program
+	.command("checkout <branch>")
+	.description("Swithch to a branch")
+	.action(checkoutCommand)
 
 program.parse(process.argv);
