@@ -35,6 +35,26 @@ class BranchManager{
 		  ? fs.readFileSync(branchRefPath, "utf-8").trim() 
 		  : undefined;
 	}
+
+	/**
+    * Switch to a different branch
+    * @param branchName Name of the branch to switch to
+    */
+	public checkout(branchName: string): void {
+		const branchPath = path.join(this.refsPath, branchName);
+		
+		// Check if branch exists
+		if (!fs.existsSync(branchPath)) {
+		  throw new Error(`Branch '${branchName}' does not exist`);
+		}
+	
+		// Update HEAD to point to the new branch
+		const newHeadContent = `ref: refs/heads/${branchName}`;
+		fs.writeFileSync(this.headPath, newHeadContent);
+	
+		console.log(`Switched to branch: ${branchName}`);
+	}
+	
 	
 
 	/**
@@ -56,6 +76,16 @@ class BranchManager{
 		// Get current commit hash
 		const currentCommitHash = this.getLatestCommitHash();
 
-  
+		// Create branch reference file with current commit hash
+		fs.ensureDirSync(this.refsPath);
+		if (currentCommitHash) {
+		  fs.writeFileSync(branchPath, currentCommitHash);
+		} else {
+		  // If no commits exist, create an empty file
+		  fs.writeFileSync(branchPath, '');
+		}
+	
+		console.log(`Created branch: ${branchName}`);
+	
 	}
 }
