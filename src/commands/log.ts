@@ -28,6 +28,16 @@ class LogManager{
 	}
 
 	/**
+   * Get the current branch name from HEAD
+   * @returns Current branch name
+   */
+	private getCurrentBranch(): string {
+		const headContent = fs.readFileSync(this.headPath, "utf-8").trim();
+		return headContent.split("refs/heads/")[1] || "main";
+	  }
+	
+
+	/**
    * Get latest commit hash for the current branch
    * @returns Commit hash or undefined if no commits exist
    */
@@ -45,6 +55,6 @@ class LogManager{
 	 */
 
 	public log(maxCommits? :number): void{
-		let currentCommit = getLatestCommitHash()
+		let currentCommit = this.getLatestCommitHash()
 	}
 }
