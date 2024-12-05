@@ -5,6 +5,8 @@ import { commitCommand } from "./commands/commit";
 import { logCommand } from "./commands/log";
 import { branchCommand, checkoutCommand, branchListCommand } from "./commands/branch";
 import { mergeCommand } from "./commands/merge";
+import { diffCommand } from "./commands/diff";
+import { cloneCommand } from "./commands/clone";
 
 program.version("0.1.0").description("TrackIt - A Minimal git implementation in typescript")
 
@@ -46,5 +48,16 @@ program
 	.command("merge <branch>")
 	.description("Merge a branch into the current branch")
 	.action(mergeCommand)
+	
+program
+	.command("diff <hash1> <hash2>")
+	.description("Compare files or commits")
+	.action(diffCommand)
+  
+program
+	.command("clone <destination>")
+	.description("Clone repository to a new location")
+	.action(cloneCommand)
+  
 
 program.parse(process.argv);
