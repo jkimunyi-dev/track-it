@@ -107,3 +107,18 @@ class BranchManager{
 	
 	}
 }
+
+/**
+ * CLI Command for creating a new branch
+ * @param branchName Name of the new branch
+ */
+export function branchCommand(branchName: string): void {
+	try {
+	  const branchManager = new BranchManager();
+	  branchManager.createBranch(branchName);
+	} catch (error) {
+	  console.error("Branch creation failed:", error);
+	  process.exit(1);
+	}
+  }
+  
