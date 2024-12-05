@@ -84,6 +84,14 @@ class CommitManager{
 	 * @returns Commit hash
 	 */
 
+	public readCommitObject(commitHash: string): CommitObject {
+		const commitPath = path.join(this.objectsPath, commitHash);
+		if (!fs.existsSync(commitPath)) {
+		  throw new Error(`Commit ${commitHash} not found`);
+		}
+		return JSON.parse(fs.readFileSync(commitPath, "utf-8"));
+	}
+
 	public commit(message: string): string{
 		// Ensure there are staged files
 		const stagedFiles = this.readStagedFiles();
@@ -138,3 +146,5 @@ export function commitCommand(message: string): void{
 		process.exit(1);
 	}
 }
+
+export default CommitManager;
