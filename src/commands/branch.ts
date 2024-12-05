@@ -136,3 +136,20 @@ export function checkoutCommand(branchName: string): void {
 	}
   }
   
+/**
+ * CLI Command for listing branches
+ */
+export function branchListCommand(): void {
+	try {
+	  const branchManager = new BranchManager();
+	  const branches = branchManager.listBranches();
+	  console.log("Branches:");
+	  branches.forEach(branch => console.log(branch));
+	} catch (error) {
+	  console.error("Failed to list branches:", error);
+	  process.exit(1);
+	}
+  }
+  
+  export default BranchManager;
+  
