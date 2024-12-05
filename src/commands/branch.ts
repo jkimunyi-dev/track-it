@@ -10,7 +10,28 @@ class BranchManager{
 		this.trackItPath = path.resolve(process.cwd(), ".track.it")
 		this.refsPath = path.join(this.trackItPath, "refs");
 		this.headPath = path.join(this.trackItPath, "HEAD");
+
+		// Ensure .track.it directory exists
+		fs.ensureDirSync(this.trackItPath);
+		
+		// Ensure HEAD file exists with default branch
+		this.initializeHEAD();
+
 	}
+	/**
+	 * Initialize HEAD file if it doesn't exist
+	 */
+	private initializeHEAD(): void {
+		// Ensure refs/heads directory exists
+		fs.ensureDirSync(path.join(this.refsPath, "heads"));
+		
+		// If HEAD file doesn't exist, create it with default main branch
+		if (!fs.existsSync(this.headPath)) {
+			const defaultHeadContent = "ref: refs/heads/main";
+			fs.writeFileSync(this.headPath, defaultHeadContent);
+		}
+	}
+
 
 	/**
     * Get the current branch name
