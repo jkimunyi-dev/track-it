@@ -2,6 +2,7 @@ import { program } from "commander";
 import { initRepository } from './commands/init';
 import { stageCommand } from "./commands/stage";
 import { commitCommand } from "./commands/commit";
+import { logCommand } from "./commands/log";
 
 program.version("0.1.0").description("TrackIt - A Minimal git implementation in typescript")
 
@@ -19,5 +20,11 @@ program
 	.command("commit")
 	.description("Commit files")
 	.action(commitCommand)
+
+program
+	.command("log")
+	.description("View commit history")
+	.action(logCommand)
+
 
 program.parse(process.argv);
