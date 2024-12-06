@@ -32,12 +32,12 @@ describe('Repository Initialization', () => {
     fs.removeSync(testRepoDir);
   });
 
-  test('should create .track-it directory', () => {
+  test('should create .trackit directory', () => {
     // Run repository initialization
     initRepository();
 
-    // Check if .track-it directory exists
-    const trackItPath = path.join(testRepoDir, '.track-it');
+    // Check if .trackit directory exists
+    const trackItPath = path.join(testRepoDir, '.trackit');
     expect(fs.existsSync(trackItPath)).toBe(true);
   });
 
@@ -45,8 +45,8 @@ describe('Repository Initialization', () => {
     initRepository();
 
     const expectedSubdirs = [
-      '.track-it/objects',
-      '.track-it/refs'
+      '.trackit/objects',
+      '.trackit/refs'
     ];
 
     expectedSubdirs.forEach(subdir => {
@@ -58,17 +58,17 @@ describe('Repository Initialization', () => {
   test('should create HEAD file with correct content', () => {
     initRepository();
 
-    const headFilePath = path.join(testRepoDir, '.track-it/HEAD');
+    const headFilePath = path.join(testRepoDir, '.trackit/HEAD');
     expect(fs.existsSync(headFilePath)).toBe(true);
 
     const headContent = fs.readFileSync(headFilePath, 'utf-8');
     expect(headContent.trim()).toBe('ref: refs/heads/main');
   });
 
-  test('should create .track-itignore file', () => {
+  test('should create .trackitignore file', () => {
     initRepository();
 
-    const ignoreFilePath = path.join(testRepoDir, '.track-itignore');
+    const ignoreFilePath = path.join(testRepoDir, '.trackitignore');
     expect(fs.existsSync(ignoreFilePath)).toBe(true);
   });
 });

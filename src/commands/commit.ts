@@ -22,7 +22,7 @@ class CommitManager{
 	private headPath: string;
 
 	constructor(){
-		this.trackItPath = path.resolve(process.cwd(), ".track-it");
+		this.trackItPath = path.resolve(process.cwd(), ".trackit");
 		this.refsPath = path.join(this.trackItPath, "refs");
 		this.objectsPath = path.join(this.trackItPath, "objects")
 		this.indexPath = path.join(this.trackItPath, "index");
@@ -33,7 +33,7 @@ class CommitManager{
 	}
 
 	private initializeRepositoryStructure(): void {
-		// Ensure .track-it directory exists
+		// Ensure .trackit directory exists
 		fs.ensureDirSync(this.trackItPath);
 		
 		// Ensure refs/heads directory exists

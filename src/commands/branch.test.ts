@@ -28,7 +28,7 @@ describe('Branch Management', () => {
   it('should create a new branch', () => {
     // First, create an initial commit (simulated)
     const initialCommitHash = 'abc123';
-    const branchesPath = path.join(tempRepoPath, '.track.it', 'refs', 'heads');
+    const branchesPath = path.join(tempRepoPath, '.trackit', 'refs', 'heads');
     fs.ensureDirSync(branchesPath);
     fs.writeFileSync(path.join(branchesPath, 'main'), initialCommitHash);
 
@@ -36,7 +36,7 @@ describe('Branch Management', () => {
     branchManager.createBranch('test-branch');
 
     // Check branch reference exists
-    const branchPath = path.join(tempRepoPath, '.track.it', 'refs', 'test-branch');
+    const branchPath = path.join(tempRepoPath, '.trackit', 'refs', 'test-branch');
     expect(fs.existsSync(branchPath)).toBe(true);
   });
 
@@ -64,7 +64,7 @@ describe('Branch Management', () => {
     branchManager.checkout('test-branch');
 
     // Check HEAD file
-    const headPath = path.join(tempRepoPath, '.track.it', 'HEAD');
+    const headPath = path.join(tempRepoPath, '.trackit', 'HEAD');
     const headContent = fs.readFileSync(headPath, 'utf-8').trim();
     
     expect(headContent).toBe('ref: refs/heads/test-branch');

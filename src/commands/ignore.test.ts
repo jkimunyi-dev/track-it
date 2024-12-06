@@ -11,8 +11,8 @@ describe('IgnoreManager', () => {
     // Create a temporary test directory
     testDir = fs.mkdtempSync(path.join(process.cwd(), 'test-'));
     
-    // Create .track-itignore file
-    ignorePath = path.join(testDir, '.track-itignore');
+    // Create .trackitignore file
+    ignorePath = path.join(testDir, '.trackitignore');
     
     // Spy on process.cwd to return test directory
     jest.spyOn(process, 'cwd').mockReturnValue(testDir);
@@ -28,7 +28,7 @@ describe('IgnoreManager', () => {
   });
 
   describe('loadIgnorePatterns', () => {
-    it('should load ignore patterns from .track-itignore', () => {
+    it('should load ignore patterns from .trackitignore', () => {
       // Write test ignore patterns
       fs.writeFileSync(ignorePath, 'node_modules\n*.log\n# Comment\n.git\n');
       
@@ -40,7 +40,7 @@ describe('IgnoreManager', () => {
       expect(patterns).toEqual(['node_modules', '*.log', '.git']);
     });
 
-    it('should return empty array if .track-itignore does not exist', () => {
+    it('should return empty array if .trackitignore does not exist', () => {
       const patterns = ignoreManager.getIgnorePatterns();
       
       expect(patterns).toEqual([]);

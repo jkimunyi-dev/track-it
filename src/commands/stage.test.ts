@@ -12,15 +12,15 @@ describe('Staging Files', () => {
     originalCwd = process.cwd();
 
     // Create temporary test repository
-    testRepoDir = path.join(process.cwd(), 'test-track-it-repo');
+    testRepoDir = path.join(process.cwd(), 'test-trackit-repo');
     fs.mkdirSync(testRepoDir, { recursive: true });
 
     // Change to test repository
     process.chdir(testRepoDir);
 
     // Initialize repository
-    fs.mkdirSync('.track-it', { recursive: true });
-    fs.mkdirSync('.track-it/objects', { recursive: true });
+    fs.mkdirSync('.trackit', { recursive: true });
+    fs.mkdirSync('.trackit/objects', { recursive: true });
 
     // Create a test file
     testFilePath = path.join(testRepoDir, 'test-file.txt');
@@ -40,7 +40,7 @@ describe('Staging Files', () => {
     stageCommand([testFilePath]);
 
     // Check index file exists
-    const indexPath = path.join(testRepoDir, '.track-it', 'index');
+    const indexPath = path.join(testRepoDir, '.trackit', 'index');
     expect(fs.existsSync(indexPath)).toBe(true);
 
     // Read and parse index
@@ -54,7 +54,7 @@ describe('Staging Files', () => {
     stageCommand([testFilePath]);
 
     // Check objects directory for blob
-    const objectsDir = path.join(testRepoDir, '.track-it', 'objects');
+    const objectsDir = path.join(testRepoDir, '.trackit', 'objects');
     const files = fs.readdirSync(objectsDir);
 
     expect(files.length).toBe(1);

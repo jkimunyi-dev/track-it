@@ -21,7 +21,7 @@ class LogManager{
 	private headPath: string;
 
 	constructor(){
-		this.trackItPath = path.resolve(process.cwd(), ".track-it");
+		this.trackItPath = path.resolve(process.cwd(), ".trackit");
 		this.refsPath = path.join(this.trackItPath, "refs")
 		this.objectsPath = path.join(this.trackItPath, "objects");
 		this.headPath = path.join(this.trackItPath, "HEAD");

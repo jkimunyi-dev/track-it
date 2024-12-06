@@ -19,7 +19,7 @@ export class DiffManager {
   private commitManager: CommitManager;
 
   constructor(pathResolver = path.resolve) {
-    this.trackItPath = pathResolver(process.cwd(), '.track-it');
+    this.trackItPath = pathResolver(process.cwd(), '.trackit');
     this.objectsPath = path.join(this.trackItPath, 'objects');
     this.commitManager = new CommitManager();
   }

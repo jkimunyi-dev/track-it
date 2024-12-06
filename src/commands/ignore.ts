@@ -8,12 +8,12 @@ class IgnoreManager {
   private ignorePatterns: string[];
 
   constructor(rootDir: string = process.cwd()) {
-    this.ignorePath = path.join(rootDir, '.track-itignore');
+    this.ignorePath = path.join(rootDir, '.trackitignore');
     this.ignorePatterns = this.loadIgnorePatterns();
   }
 
   /**
-   * Load ignore patterns from .track-itignore file
+   * Load ignore patterns from .trackitignore file
    * @returns Array of ignore patterns
    */
   private loadIgnorePatterns(): string[] {
@@ -70,7 +70,7 @@ class IgnoreManager {
   }
 
   /**
-   * Add new ignore patterns to the .track-itignore file
+   * Add new ignore patterns to the .trackitignore file
    * @param patterns Patterns to ignore
    */
   public addIgnorePatterns(patterns: string[]): void {

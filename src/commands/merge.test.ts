@@ -12,8 +12,8 @@ describe('MergeManager', () => {
     // Create a temporary test directory
     testDir = fs.mkdtempSync(path.join(process.cwd(), 'test-'));
     
-    // Create .track-it directory structure
-    trackItPath = path.join(testDir, '.track-it');
+    // Create .trackit directory structure
+    trackItPath = path.join(testDir, '.trackit');
     fs.mkdirSync(path.join(trackItPath, 'refs', 'heads'), { recursive: true });
     fs.mkdirSync(path.join(trackItPath, 'objects'), { recursive: true });
     
@@ -86,7 +86,7 @@ describe('MergeManager', () => {
   describe('detectMergeConflicts', () => {
     it('should detect conflicts when same file has different content', () => {
       // Prepare mock commit objects
-      const objectsPath = path.join(testDir, '.track-it', 'objects');
+      const objectsPath = path.join(testDir, '.trackit', 'objects');
       
       // Create file hashes
       const file1HashBranch1 = 'hash1';
@@ -130,7 +130,7 @@ describe('MergeManager', () => {
   describe('merge', () => {
     it('should throw error when merging into a branch with no commits', () => {
       // Prepare an empty branch
-      const refsPath = path.join(testDir, '.track-it', 'refs', 'heads');
+      const refsPath = path.join(testDir, '.trackit', 'refs', 'heads');
       fs.writeFileSync(path.join(refsPath, 'fromBranch'), 'some-commit-hash');
       
       // Remove any commits from main branch

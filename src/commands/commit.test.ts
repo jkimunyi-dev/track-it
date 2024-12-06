@@ -41,11 +41,11 @@ describe('Committing Changes', () => {
     commitCommand('Initial commit');
 
     // Check refs directory
-    const refsPath = path.join(tempRepoPath, '.track-it', 'refs', 'heads', 'main');
+    const refsPath = path.join(tempRepoPath, '.trackit', 'refs', 'heads', 'main');
     const commitHash = fs.readFileSync(refsPath, 'utf-8').trim();
 
     // Verify commit object exists
-    const commitPath = path.join(tempRepoPath, '.track-it', 'objects', commitHash);
+    const commitPath = path.join(tempRepoPath, '.trackit', 'objects', commitHash);
     expect(fs.existsSync(commitPath)).toBe(true);
 
     // Verify commit content
@@ -73,7 +73,7 @@ describe('Committing Changes', () => {
     commitCommand('Initial commit');
 
     // Check index is cleared
-    const indexPath = path.join(tempRepoPath, '.track-it', 'index');
+    const indexPath = path.join(tempRepoPath, '.trackit', 'index');
     const indexContent = JSON.parse(fs.readFileSync(indexPath, 'utf-8'));
     expect(indexContent.length).toBe(0);
   });

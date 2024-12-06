@@ -2,9 +2,9 @@ import * as fs from 'fs-extra';
 import * as path from 'path';
 
 export function initRepository(): void {
-  // Use .track-it instead of .git
-  const repoPath = path.resolve(process.cwd(), '.track-it');
-  const ignoreFilePath = path.resolve(process.cwd(), '.track-itignore');
+  // Use .trackit instead of .git
+  const repoPath = path.resolve(process.cwd(), '.trackit');
+  const ignoreFilePath = path.resolve(process.cwd(), '.trackitignore');
   
   try {
     // Create repository directories
@@ -15,9 +15,9 @@ export function initRepository(): void {
     // Create HEAD file with correct reference format
     fs.writeFileSync(path.join(repoPath, 'HEAD'), 'ref: refs/heads/main');
 
-    // Create .track-itignore file with default entries
+    // Create .trackitignore file with default entries
     const defaultIgnoreContent = `
-		# Default Track-It ignore file
+		# Default trackit ignore file
 		node_modules/
 		.DS_Store
 		*.log
@@ -25,10 +25,10 @@ export function initRepository(): void {
 		`;
     fs.writeFileSync(ignoreFilePath, defaultIgnoreContent);
 
-    console.log('Track-It repository initiated successfully');
-    console.log('Created .track-it directory and .track-itignore file');
+    console.log('trackit repository initiated successfully');
+    console.log('Created .trackit directory and .trackitignore file');
   } catch (error) {
-    console.error('Failed to initialize Track-It repository:', error);
+    console.error('Failed to initialize trackit repository:', error);
     process.exit(1);
   }
 }

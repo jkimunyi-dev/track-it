@@ -27,7 +27,7 @@ class MergeManager {
   private headPath: string;
 
   constructor(baseDir: string = process.cwd()) {
-    this.trackItPath = path.resolve(baseDir, ".track-it");
+    this.trackItPath = path.resolve(baseDir, ".trackit");
     this.refsPath = path.join(this.trackItPath, "refs");
     this.objectsPath = path.join(this.trackItPath, "objects");
     this.headPath = path.join(this.trackItPath, "HEAD");

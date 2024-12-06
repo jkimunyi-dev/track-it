@@ -12,8 +12,8 @@ describe('LogManager', () => {
     // Create a temporary test directory
     testDir = fs.mkdtempSync(path.join(process.cwd(), 'test-'));
     
-    // Create .track-it directory structure
-    trackItPath = path.join(testDir, '.track-it');
+    // Create .trackit directory structure
+    trackItPath = path.join(testDir, '.trackit');
     fs.mkdirSync(path.join(trackItPath, 'refs', 'heads'), { recursive: true });
     fs.mkdirSync(path.join(trackItPath, 'objects'), { recursive: true });
     

@@ -5,7 +5,7 @@ class CloneManager {
   private trackItPath: string;
 
   constructor() {
-    this.trackItPath = path.resolve(process.cwd(), ".track-it");
+    this.trackItPath = path.resolve(process.cwd(), ".trackit");
   }
 
   /**
@@ -15,7 +15,7 @@ class CloneManager {
   public clone(destinationPath: string): void {
     // Validate source repository exists
     if (!fs.existsSync(this.trackItPath)) {
-      throw new Error('No track-it repository found in the current directory');
+      throw new Error('No trackit repository found in the current directory');
     }
 
     // Ensure destination path is valid and empty
@@ -28,8 +28,8 @@ class CloneManager {
       fs.ensureDirSync(destinationPath);
     }
 
-    // Copy .track-it directory
-    const destinationTrackItPath = path.join(destinationPath, ".track-it");
+    // Copy .trackit directory
+    const destinationTrackItPath = path.join(destinationPath, ".trackit");
     fs.copySync(this.trackItPath, destinationTrackItPath);
 
     console.log(`Repository cloned to: ${destinationPath}`);

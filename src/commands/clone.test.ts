@@ -12,8 +12,8 @@ describe('CloneManager', () => {
     sourceDir = fs.mkdtempSync(path.join(process.cwd(), 'source-'));
     destinationDir = fs.mkdtempSync(path.join(process.cwd(), 'destination-'));
 
-    // Create a mock .track-it directory in source
-    const trackItPath = path.join(sourceDir, '.track-it');
+    // Create a mock .trackit directory in source
+    const trackItPath = path.join(sourceDir, '.trackit');
     fs.mkdirSync(trackItPath, { recursive: true });
     
     // Add some dummy files to simulate a repository
@@ -41,7 +41,7 @@ describe('CloneManager', () => {
       cloneManager.clone(destinationDir);
 
       // Verify destination directory contents
-      const clonedTrackItPath = path.join(destinationDir, '.track-it');
+      const clonedTrackItPath = path.join(destinationDir, '.trackit');
       
       expect(fs.existsSync(clonedTrackItPath)).toBe(true);
       expect(fs.existsSync(path.join(clonedTrackItPath, 'HEAD'))).toBe(true);
@@ -50,12 +50,12 @@ describe('CloneManager', () => {
     });
 
     it('should throw error if source repository does not exist', () => {
-      // Remove source .track-it directory
-      fs.removeSync(path.join(sourceDir, '.track-it'));
+      // Remove source .trackit directory
+      fs.removeSync(path.join(sourceDir, '.trackit'));
 
       expect(() => {
         cloneManager.clone(destinationDir);
-      }).toThrow('No track-it repository found in the current directory');
+      }).toThrow('No trackit repository found in the current directory');
     });
 
     it('should throw error if destination directory is not empty', () => {

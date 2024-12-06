@@ -21,7 +21,7 @@ describe('DiffManager', () => {
     testDir = fs.mkdtempSync(path.join(process.cwd(), 'test-'));
     
     // Create necessary directories
-    fs.mkdirSync(path.join(testDir, '.track-it', 'objects'), { recursive: true });
+    fs.mkdirSync(path.join(testDir, '.trackit', 'objects'), { recursive: true });
     
     // Create a mock CommitManager
     mockCommitManager = {
@@ -31,8 +31,8 @@ describe('DiffManager', () => {
     // Initialize DiffManager with test path resolver and mock CommitManager
     const createTestPathResolver = (testDir: string) => {
       return (base: string, ...paths: string[]) => {
-        if (base === process.cwd() && paths[0] === '.track-it') {
-          return path.join(testDir, '.track-it');
+        if (base === process.cwd() && paths[0] === '.trackit') {
+          return path.join(testDir, '.trackit');
         }
         return path.resolve(base, ...paths);
       };
@@ -77,7 +77,7 @@ describe('DiffManager', () => {
       };
 
       // Prepare object directory for mocked file hashes
-      const objectsPath = path.join(testDir, '.track-it', 'objects');
+      const objectsPath = path.join(testDir, '.trackit', 'objects');
       fs.writeFileSync(path.join(objectsPath, 'hash1'), 'Original content');
       fs.writeFileSync(path.join(objectsPath, 'hash3'), 'Modified content');
 

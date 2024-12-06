@@ -14,7 +14,7 @@ class StateManager{
 	private objectsPath: string;
 
 	constructor(){
-		this.trackItPath = path.resolve(process.cwd(), ".track-it");
+		this.trackItPath = path.resolve(process.cwd(), ".trackit");
 		this.indexPath = path.join(this.trackItPath, "index");
 		this.objectsPath = path.join(this.trackItPath, "objects");
 	}
@@ -59,7 +59,7 @@ class StateManager{
 	 * @param filePaths File paths to stage
 	 */
 	public stage(filePaths: string[]): void{
-		// Ensure .track-it/objects exists
+		// Ensure .trackit/objects exists
 		fs.ensureDirSync(this.objectsPath);
 
 		// Read existing index or initialize
