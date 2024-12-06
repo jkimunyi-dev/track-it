@@ -26,12 +26,13 @@ class MergeManager {
   private objectsPath: string;
   private headPath: string;
 
-  constructor() {
-    this.trackItPath = path.resolve(process.cwd(), ".track-it");
+  constructor(baseDir: string = process.cwd()) {
+    this.trackItPath = path.resolve(baseDir, ".track-it");
     this.refsPath = path.join(this.trackItPath, "refs");
     this.objectsPath = path.join(this.trackItPath, "objects");
     this.headPath = path.join(this.trackItPath, "HEAD");
   }
+
 
   /**
    * Get the current branch name
