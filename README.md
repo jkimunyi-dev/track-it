@@ -48,8 +48,6 @@ src/
 │   ├── merge.test.ts      # Unit tests for merge functionality.
 │   ├── stage.ts           # Stages files for commit.
 │   ├── stage.test.ts      # Unit tests for stage functionality.
-├── core
-│   └── repository.ts      # Core logic for repository management.
 ├── utils
 │   ├── file-system.ts     # Utilities for file system operations.
 │   └── types.ts           # Shared type definitions.
