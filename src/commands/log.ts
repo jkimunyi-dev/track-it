@@ -111,13 +111,17 @@ class LogManager{
  * CLI Command for displaying commit log
  * @param maxCommits Optional maximum number of commits to display
  */
-export function logCommand(maxCommits?: number): void {
+export function logCommand(maxCommits?: number) {
 	try {
 	  const logManager = new LogManager();
 	  logManager.log(maxCommits);
-	} catch (error) {
-	  console.error("Failed to display log:", error);
+	} catch (error: unknown) {
+	  // Properly handle the unknown error type
+	  const errorMessage = error instanceof Error 
+		? error.message 
+		: String(error);
+	  
+	  console.error(`Failed to display log: ${errorMessage}`);
 	  process.exit(1);
 	}
-  }
-  
+  }  export default LogManager;
