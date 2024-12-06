@@ -1,148 +1,140 @@
-# Track-It: A Distributed Source Control System
+# Track-It
 
-Track-It is a lightweight, distributed source control system inspired by Git.
-Designed for developers who want a simple yet powerful tool to manage their
-projects, Track-It provides essential functionalities like staging files,
-committing changes, viewing commit history, and more—all implemented from
-scratch.
+## Project Overview
 
----
+Track-It is a distributed source control system inspired by Git. It provides
+essential functionalities for managing code repositories, including initializing
+repositories, staging files, committing changes, and branching. The project
+demonstrates core concepts of version control and is implemented entirely in
+TypeScript.
 
-## Features
+## Features Implemented
 
-### Core Functionalities
+- **Repository Initialization** (`init`): Create a new repository in the
+  specified directory, storing metadata in a `.trackit` subdirectory.
+- **Staging Files** (`stage`): Add files to the staging area in preparation for
+  commits.
+- **Committing Changes** (`commit`): Save changes to the repository's history.
+- **Branching** (`branch`): Create and manage branches to support parallel
+  development.
+- **Merging** (`merge`): Combine changes from different branches and detect
+  conflicts.
+- **Viewing History** (`log`): View the commit history of a repository.
+- **Diffing Changes** (`diff`): Compare changes between commits or branches.
+- **Cloning Repositories** (`clone`): Create a copy of a repository.
+- **Ignoring Files** (`ignore`): Specify patterns of files to exclude from
+  version control.
 
-- **Initialize a Repository**: Create a new repository with a `.trackit`
-  directory to store version history.
-- **Staging Files**: Add files to the staging area for tracking changes
-  (`trackit add`).
-- **Committing Changes**: Save staged changes to the repository with descriptive
-  commit messages (`trackit commit`).
-- **Viewing Commit History**: List all commits in chronological order with
-  metadata (`trackit log`).
-- **Branch Management**: Create and switch between branches (`trackit branch`).
-- **File Differences**: Compare changes between branches or commits
-  (`trackit diff`).
-- **Conflict Detection**: Detect conflicting changes during merges.
-- **Cloning Repositories**: Clone repositories to another directory on disk.
-- **Ignore Files**: Use `.trackignore` files to exclude specific files or
-  directories from tracking.
+## Directory Structure
 
----
-
-## Project Structure
-
-```bash
-Track-It/
-│
-├── src/                # Contains all your source code
-│   ├── main.go         # Main application entry point
-│   ├── cli.go          # CLI functionalities
-│   ├── commands/       # Specific command implementations
-├── tests/              # Test cases
-│   ├── unit/           # Unit tests
-│   ├── integration/    # Integration tests
-├── docs/               # Documentation files
-│   ├── README.md       # Main documentation
-│   ├── implementation.md # Step-by-step implementation details
-│   ├── ARCHITECTURE.md  # Design and architecture decisions
-├── .gitignore
-├── LICENSE
-└── go.mod              # Go module dependencies
+```
+src/
+├── commands
+│   ├── branch.ts          # Handles branch creation and management.
+│   ├── branch.test.ts     # Unit tests for branch functionality.
+│   ├── clone.ts           # Implements repository cloning.
+│   ├── clone.test.ts      # Unit tests for clone functionality.
+│   ├── commit.ts          # Manages committing changes.
+│   ├── commit.test.ts     # Unit tests for commit functionality.
+│   ├── diff.ts            # Handles diffing changes between states.
+│   ├── diff.test.ts       # Unit tests for diff functionality.
+│   ├── ignore.ts          # Implements file ignoring.
+│   ├── ignore.test.ts     # Unit tests for ignore functionality.
+│   ├── init.ts            # Repository initialization logic.
+│   ├── init.test.ts       # Unit tests for repository initialization.
+│   ├── log.ts             # Displays commit history.
+│   ├── log.test.ts        # Unit tests for log functionality.
+│   ├── merge.ts           # Handles branch merging.
+│   ├── merge.test.ts      # Unit tests for merge functionality.
+│   ├── stage.ts           # Stages files for commit.
+│   ├── stage.test.ts      # Unit tests for stage functionality.
+├── core
+│   └── repository.ts      # Core logic for repository management.
+├── utils
+│   ├── file-system.ts     # Utilities for file system operations.
+│   └── types.ts           # Shared type definitions.
+├── index.ts               # Entry point of the application.
 ```
 
----
+## Installation and Usage
 
-## Installation
+### Prerequisites
 
-1. Clone the repository from GitHub:
+- Node.js (v18 or higher)
+- TypeScript (v5.7 or higher)
+- npm or yarn
+
+### Installation
+
+1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/track-it.git
+   git clone https://github.com/your-username/track-it.git
    cd track-it
    ```
-
 2. Install dependencies:
    ```bash
    npm install
    ```
-
 3. Build the project:
    ```bash
    npm run build
    ```
 
-4. Run the tool:
-   ```bash
-   npm start
-   ```
+### Usage
 
----
-
-## Usage
-
-### Initialize a Repository
+Initialize a repository:
 
 ```bash
-trackit init
+npm start -- init <repository-path>
 ```
 
-Creates a new `.trackit` directory in the current folder.
-
-### Stage Files
+Stage a file for commit:
 
 ```bash
-trackit add file1.txt file2.txt
+npm start -- stage <file-path>
 ```
 
-Stages the specified files for tracking.
-
-### Commit Changes
+Commit changes:
 
 ```bash
-trackit commit -m "Your commit message"
+npm start -- commit -m "Your commit message"
 ```
 
-Records the staged changes with a commit message.
-
-### View Commit History
+View commit history:
 
 ```bash
-trackit log
+npm start -- log
 ```
 
-Displays a list of all commits.
+For additional commands and examples, see the
+[instructions.md](./instructions.md) file.
 
-### Create a Branch
+## Highlights of My Thought Process
 
-```bash
-trackit branch new-branch-name
-```
+- **Modular Design**: The project is divided into `commands`, `core`, and
+  `utils`, ensuring clean separation of concerns and maintainability.
+- **Testing**: Unit tests are implemented for all critical functionalities using
+  Jest, ensuring the correctness of the codebase.
+- **Error Handling**: Comprehensive error handling is included to manage edge
+  cases like invalid commands or missing repositories.
+- **Scalability**: Designed to easily add more commands or features in the
+  future.
+- **Documentation**: Detailed inline comments and structured documentation
+  provide clarity and ease of understanding.
 
-Creates a new branch.
+## Future Improvements
 
-### Merge Branches
-
-```bash
-trackit merge branch-to-merge
-```
-
-Merges the specified branch into the current branch.
-
----
-
-## Highlights of Thought Process
-
-1. **Modular Design**: The project is divided into clear modules for
-   initialization, staging, committing, and more.
-2. **Incremental Development**: Each feature was built and tested in isolation
-   before integration.
-3. **Error Handling**: Robust error handling ensures smooth operation and
-   meaningful error messages for users.
-4. **Documentation First**: Emphasis on clear documentation to make the tool
-   easy to use and extend.
-
----
+- Implement networking for remote repository cloning and pushing.
+- Add a graphical user interface (GUI) for enhanced usability.
+- Incorporate rebase and conflict resolution features.
 
 ## License
 
 This project is licensed under the ISC License.
+
+---
+
+### Need Help?
+
+If you have questions or encounter issues, feel free to open an issue on the
+repository or contact me at [your-email@example.com].
