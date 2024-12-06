@@ -5,13 +5,15 @@ import MergeManager from './merge';
 describe('MergeManager', () => {
   let mergeManager: MergeManager;
   let testDir: string;
+  let trackItPath: string;
+
 
   beforeEach(() => {
     // Create a temporary test directory
     testDir = fs.mkdtempSync(path.join(process.cwd(), 'test-'));
     
     // Create .track-it directory structure
-    const trackItPath = path.join(testDir, '.track-it');
+    trackItPath = path.join(testDir, '.track-it');
     fs.mkdirSync(path.join(trackItPath, 'refs', 'heads'), { recursive: true });
     fs.mkdirSync(path.join(trackItPath, 'objects'), { recursive: true });
     
@@ -21,11 +23,8 @@ describe('MergeManager', () => {
       'refs/heads/main'
     );
 
-    // Spy on path resolution to use test directory
-    jest.spyOn(path, 'resolve').mockReturnValue(trackItPath);
-    
-    // Initialize MergeManager
-    mergeManager = new MergeManager();
+    // Initialize MergeManager with the test directory
+    mergeManager = new MergeManager(testDir);
   });
 
   afterEach(() => {
@@ -34,10 +33,11 @@ describe('MergeManager', () => {
     jest.restoreAllMocks();
   });
 
+
   describe('findCommonAncestor', () => {
     it('should find common ancestor between two branches', () => {
       // Prepare mock branch commits
-      const objectsPath = path.join(testDir, '.track-it', 'objects');
+      const objectsPath = path.join(trackItPath, 'objects');
       const branch1CommitHash = 'commit1';
       const branch2CommitHash = 'commit3';
       const commonAncestorHash = 'commit2';
@@ -62,7 +62,7 @@ describe('MergeManager', () => {
       );
 
       // Prepare branch references
-      const refsPath = path.join(testDir, '.track-it', 'refs', 'heads');
+      const refsPath = path.join(trackItPath, 'refs', 'heads');
       fs.writeFileSync(path.join(refsPath, 'branch1'), branch1CommitHash);
       fs.writeFileSync(path.join(refsPath, 'branch2'), branch2CommitHash);
 
@@ -80,6 +80,7 @@ describe('MergeManager', () => {
 
       expect(result).toBeUndefined();
     });
+
   });
 
   describe('detectMergeConflicts', () => {
