@@ -27,13 +27,37 @@ class CommitManager{
 		this.objectsPath = path.join(this.trackItPath, "objects")
 		this.indexPath = path.join(this.trackItPath, "index");
 		this.headPath = path.join(this.trackItPath, "HEAD");
+
+		// Ensure all necessary directories exist
+		this.initializeRepositoryStructure();
+	}
+
+	private initializeRepositoryStructure(): void {
+		// Ensure .track-it directory exists
+		fs.ensureDirSync(this.trackItPath);
+		
+		// Ensure refs/heads directory exists
+		fs.ensureDirSync(path.join(this.refsPath, "heads"));
+		
+		// Ensure objects directory exists
+		fs.ensureDirSync(this.objectsPath);
+
+		// Ensure HEAD file exists with default branch
+		if (!fs.existsSync(this.headPath)) {
+			const defaultHeadContent = "ref: refs/heads/main";
+			fs.writeFileSync(this.headPath, defaultHeadContent);
+		}
+
+		// Ensure index file exists and is an empty array
+		if (!fs.existsSync(this.indexPath)) {
+			fs.writeFileSync(this.indexPath, "[]");
+		}
 	}
 
 	/**
 	 * Read currently staged files from index
 	 * @returns Array of staged files
 	 */
-
 	private readStagedFiles(): StagedFile[]{
 		if(!fs.existsSync(this.indexPath)){
 			return []
@@ -45,18 +69,16 @@ class CommitManager{
 	 * Get the current branch name of the HEAD
 	 * @returns Current branch name
 	 */
-
 	private getCurrentBranch(): string {
 		const headContent = fs.readFileSync(this.headPath, "utf-8").trim();
 		
-		return headContent.split("refs/heads/")[1] || " main";
+		return headContent.split("refs/heads/")[1] || "main";
 	}
 
 	/**
 	 * Get latest commit hash for the current branch
 	 * @returns Commit hash or undefined if there are no previous commits
 	 */
-
 	private getLatestCommitHash(): string | undefined{
 		const branchRefPath = path.join(this.refsPath, "heads", this.getCurrentBranch());
 
@@ -66,24 +88,22 @@ class CommitManager{
 	}
 
 	/**
-	 * Hash a commit object to generate a uniques identifier
+	 * Hash a commit object to generate a unique identifier
 	 * @param commitObject Commit object to hash
 	 * @returns Commit hash
 	 */
-
 	private hashCommitObject(commitObject : CommitObject): string{
-		const hashSum = crypto.createHash("sha-256");
+		const hashSum = crypto.createHash("sha256");
 		hashSum.update(JSON.stringify(commitObject));
 		
 		return hashSum.digest("hex");
 	}
 
 	/**
-	 * Create a commit object and save it
-	 * @param message Commit message
-	 * @returns Commit hash
+	 * Read a commit object
+	 * @param commitHash Hash of the commit to read
+	 * @returns Commit object
 	 */
-
 	public readCommitObject(commitHash: string): CommitObject {
 		const commitPath = path.join(this.objectsPath, commitHash);
 		if (!fs.existsSync(commitPath)) {
@@ -92,12 +112,16 @@ class CommitManager{
 		return JSON.parse(fs.readFileSync(commitPath, "utf-8"));
 	}
 
+	/**
+	 * Create a commit
+	 * @param message Commit message
+	 * @returns Commit hash
+	 */
 	public commit(message: string): string{
 		// Ensure there are staged files
 		const stagedFiles = this.readStagedFiles();
 		if(stagedFiles.length ===0){
 			throw new Error("No changes staged for commit");
-			
 		}
 
 		// Create a commit object
@@ -118,6 +142,11 @@ class CommitManager{
 		// Update branch reference
 		const currentBranch = this.getCurrentBranch();
 		const branchRefPath = path.join(this.refsPath, "heads", currentBranch);
+		
+		// Ensure the heads directory exists
+		fs.ensureDirSync(path.dirname(branchRefPath));
+		
+		// Write the commit hash to the branch reference
 		fs.writeFileSync(branchRefPath, commitHash);
 
 		// Clear the index
@@ -132,19 +161,15 @@ class CommitManager{
  * CLI Command for creating a commit
  * @param message Commit message
  */
+export function commitCommand(message: string): void {
+    
+        if(!message){
+            throw new Error("Commit message is required");
+        }
 
-export function commitCommand(message: string): void{
-	try {
-		if(!message){
-			throw new Error("Commit message is required");
-		}
-
-		const commitManager = new CommitManager();
-		
-	} catch (error) {
-		console.error("Commit Failed : ", error);
-		process.exit(1);
-	}
+        const commitManager = new CommitManager();
+        commitManager.commit(message); // Actually call the commit method
+    
 }
 
 export default CommitManager;
