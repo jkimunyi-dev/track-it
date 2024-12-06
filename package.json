@@ -1,5 +1,5 @@
 {
-  "name": "track-it",
+  "name": "trackit",
   "version": "1.0.1",
   "main": "index.js",
   "bin": "build/index.js",
