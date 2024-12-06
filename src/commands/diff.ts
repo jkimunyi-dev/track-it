@@ -13,14 +13,14 @@ interface DiffResult {
   differences: string[];
 }
 
-class DiffManager {
+export class DiffManager {
   private trackItPath: string;
   private objectsPath: string;
   private commitManager: CommitManager;
 
-  constructor() {
-    this.trackItPath = path.resolve(process.cwd(), ".track-it");
-    this.objectsPath = path.join(this.trackItPath, "objects");
+  constructor(pathResolver = path.resolve) {
+    this.trackItPath = pathResolver(process.cwd(), '.track-it');
+    this.objectsPath = path.join(this.trackItPath, 'objects');
     this.commitManager = new CommitManager();
   }
 
@@ -47,27 +47,38 @@ class DiffManager {
     const content1 = this.readFileContentByHash(hash1);
     const content2 = this.readFileContentByHash(hash2);
 
-    const dmp = new diff_match_patch();
-    const diffs = dmp.diff_main(content1, content2);
-    dmp.diff_cleanupSemantic(diffs);
+    const lines1 = content1.split('\n');
+    const lines2 = content2.split('\n');
 
     const lineDiffs: string[] = [];
-    diffs.forEach(([op, text]) => {
-      switch (op) {
-        case 1: // Insertion
-          lineDiffs.push(`+ ${text}`);
-          break;
-        case -1: // Deletion
-          lineDiffs.push(`- ${text}`);
-          break;
-        case 0: // No change
-          lineDiffs.push(`  ${text}`);
-          break;
+    const maxLength = Math.max(lines1.length, lines2.length);
+
+    for (let i = 0; i < maxLength; i++) {
+      const line1 = lines1[i] || '';
+      const line2 = lines2[i] || '';
+
+      if (line1 !== line2) {
+        if (line1 && line2) {
+          // Line changed
+          lineDiffs.push(`  ${line1}`);
+          lineDiffs.push(`- ${line1}`);
+          lineDiffs.push(`+ ${line2}`);
+        } else if (line1) {
+          // Line removed
+          lineDiffs.push(`- ${line1}`);
+        } else if (line2) {
+          // Line added
+          lineDiffs.push(`+ ${line2}`);
+        }
+      } else if (line1) {
+        // Unchanged line
+        lineDiffs.push(`  ${line1}`);
       }
-    });
+    }
 
     return lineDiffs;
   }
+
 
   /**
    * Diff between commits
