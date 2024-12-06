@@ -18,9 +18,7 @@ class BranchManager{
 		this.initializeHEAD();
 
 	}
-	/**
-	 * Initialize HEAD file if it doesn't exist
-	 */
+
 	private initializeHEAD(): void {
 		// Ensure refs/heads directory exists
 		fs.ensureDirSync(path.join(this.refsPath, "heads"));
