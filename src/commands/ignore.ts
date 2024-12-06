@@ -41,7 +41,22 @@ class IgnoreManager {
   public isFileIgnored(filePath: string): boolean {
     const relativePath = path.relative(process.cwd(), filePath);
     return this.ignorePatterns.some(pattern => 
-      minimatch(relativePath, pattern, { dot: true, matchBase: true })
+      minimatch(relativePath, pattern, { 
+        dot: true,      // Allow matching of dotfiles
+        matchBase: true,  // Match basename against pattern
+        nobrace: true,   // Disable brace expansion
+        noext: true,     // Disable extglob
+        flipNegate: false  // Ensure negative patterns are handled correctly
+      }) ||
+      this.ignorePatterns.some(p => 
+        // Check if the file is inside an ignored directory
+        minimatch(relativePath, `${p}/**`, { 
+          dot: true,
+          matchBase: true,
+          nobrace: true,
+          noext: true
+        })
+      )
     );
   }
 
@@ -87,6 +102,9 @@ class IgnoreManager {
 
       console.log('Updated ignore patterns:');
       newPatterns.forEach(pattern => console.log(`+ ${pattern}`));
+
+      // Reload ignore patterns
+      this.ignorePatterns = this.loadIgnorePatterns();
     } catch (error) {
       console.error('Failed to update ignore patterns:', error);
     }
@@ -98,25 +116,6 @@ class IgnoreManager {
    */
   public getIgnorePatterns(): string[] {
     return this.ignorePatterns;
-  }
-}
-
-// Modify existing stage and commit commands to use ignore functionality
-export function stageCommand(filePaths: string[]): void {
-  try {
-    const ignoreManager = new IgnoreManager();
-    const filteredFiles = ignoreManager.filterIgnoredFiles(filePaths);
-
-    if (filteredFiles.length === 0) {
-      console.log('No files to stage (all files ignored)');
-      return;
-    }
-
-    const stateManager = new StateManager();
-    stateManager.stage(filteredFiles);
-  } catch (error) {
-    console.error('Staging failed:', error);
-    process.exit(1);
   }
 }
 
