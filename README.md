@@ -8,6 +8,8 @@ repositories, staging files, committing changes, and branching. The project
 demonstrates core concepts of version control and is implemented entirely in
 TypeScript.
 
+---
+
 ## Features Implemented
 
 - **Repository Initialization** (`init`): Create a new repository in the
@@ -25,6 +27,8 @@ TypeScript.
 - **Ignoring Files** (`ignore`): Specify patterns of files to exclude from
   version control.
 
+  ---
+
 ## Implementation Details
 
 The implementation guide offers a detailed, step-by-step account of how
@@ -34,6 +38,8 @@ resolutions.
 
 [Read the implementation details here](./implementation.md)
 
+---
+
 ## Project Architecture
 
 The project architecture provides a detailed overview of how `Track-It` is
@@ -42,6 +48,8 @@ TypeScript, as well as how key commands (e.g., `add`, `commit`, `clone`) operate
 internally.
 
 [Read the full architecture documentation here](./ARCHITECTURE.md)
+
+---
 
 ## Directory Structure
 
@@ -72,6 +80,8 @@ src/
 ├── index.ts               # Entry point of the application.
 ```
 
+---
+
 ## Installation and Usage
 
 ### Prerequisites
@@ -79,6 +89,8 @@ src/
 - Node.js (v18 or higher)
 - TypeScript (v5.7 or higher)
 - npm or yarn
+
+---
 
 ### Installation
 
@@ -95,6 +107,8 @@ src/
    ```bash
    npm run build
    ```
+
+---
 
 ### Usage
 
@@ -125,6 +139,8 @@ npm start -- log
 For additional commands and examples, see the
 [instructions.md](./instructions.md) file.
 
+---
+
 ## Highlights of My Thought Process
 
 - **Modular Design**: The project is divided into `commands`, `core`, and
@@ -138,11 +154,15 @@ For additional commands and examples, see the
 - **Documentation**: Detailed inline comments and structured documentation
   provide clarity and ease of understanding.
 
+---
+
 ## Future Improvements
 
 - Implement networking for remote repository cloning and pushing.
 - Add a graphical user interface (GUI) for enhanced usability.
 - Incorporate rebase and conflict resolution features.
+
+---
 
 ## License
 
