@@ -25,6 +25,24 @@ TypeScript.
 - **Ignoring Files** (`ignore`): Specify patterns of files to exclude from
   version control.
 
+## Implementation Details
+
+The implementation guide offers a detailed, step-by-step account of how
+`Track-It` was built. It documents the incremental development process, the
+decisions made at various stages, and the challenges faced along with their
+resolutions.
+
+[Read the implementation details here](./implementation.md)
+
+## Project Architecture
+
+The project architecture provides a detailed overview of how `Track-It` is
+structured and its high-level workflow. It explains the rationale behind using
+TypeScript, as well as how key commands (e.g., `add`, `commit`, `clone`) operate
+internally.
+
+[Read the full architecture documentation here](./ARCHITECTURE.md)
+
 ## Directory Structure
 
 ```
@@ -135,4 +153,4 @@ This project is licensed under the ISC License.
 ### Need Help?
 
 If you have questions or encounter issues, feel free to open an issue on the
-repository or contact me at [your-email@example.com].
+repository or contact me at [jkkimunyi@gmail.com].
